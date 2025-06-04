@@ -1,0 +1,841 @@
+QUESTION,ANSWER
+"****
+
+A company has a typical RAG-enabled, customer-facing chatbot on its website.
+![Image](https://img.examtopics.com/certified-generative-ai-engineer-associate/image9.png)
+Select the correct sequence of components a user's questions will go through before the final output is returned. Use the diagram above for reference.
+
+[https://www.examtopics.com/discussions/databricks/view/148716-exam-certified-generative-ai-engineer-associate-topic-1/](https://www.examtopics.com/discussions/databricks/view/148716-exam-certified-generative-ai-engineer-associate-topic-1/)
+
+A. 1. embedding model, 2. vector search, 3. context-augmented prompt, 4. response-generating LLM
+B. 1. context-augmented prompt, 2. vector search, 3. embedding model, 4. response-generating LLM
+C. 1. response-generating LLM, 2. vector search, 3. context-augmented prompt, 4. embedding model
+D. 1. response-generating LLM, 2. context-augmented prompt, 3. vector search, 4. embedding model
+
+**","**
+
+A. The correct sequence is: 1. embedding model, 2. vector search, 3. context-augmented prompt, 4. response-generating LLM.
+
+*   **Why A is correct:** The user's question needs to be converted into a vector representation using an embedding model. These vectors will then be used to search a database for relevant documents (vector search). The retrieved information is combined with the original question to create a context-augmented prompt. Finally, the response-generating LLM uses this prompt to generate the answer.
+*   **Why other options are incorrect:** Options B, C, and D propose sequences that do not align with the RAG workflow. The LLM needs the context-augmented prompt to generate a relevant response, hence it must be the last step in the sequence. The embedding model must come first to vectorize the question and allow the search to begin."
+"```markdown
+ [https://www.examtopics.com/discussions/databricks/view/148717-exam-certified-generative-ai-engineer-associate-topic-1/](https://www.examtopics.com/discussions/databricks/view/148717-exam-certified-generative-ai-engineer-associate-topic-1/)
+
+A Generative Al Engineer interfaces with an LLM with prompt/response behavior that has been trained on customer calls inquiring about product availability. The LLM is designed to output “In Stock” if the product is available or only the term “Out of Stock” if not.
+Which prompt will work to allow the engineer to respond to call classification labels correctly?
+A. Respond with “In Stock” if the customer asks for a product.
+B. You will be given a customer call transcript where the customer asks about product availability. The outputs are either “In Stock” or “Out of Stock”. Format the output in JSON, for example: {“call_id”: “123”, “label”: “In Stock”}.
+C. Respond with “Out of Stock” if the customer asks for a product.
+D. You will be given a customer call transcript where the customer inquires about product availability. Respond with “In Stock” if the product is available or “Out of Stock” if not.","D.
+
+*   **Why D is correct:** Option D provides clear instructions to the LLM: given a customer call transcript, respond with ""In Stock"" if the product is available and ""Out of Stock"" if it is not. This directly aligns with the problem description's desired LLM behavior.
+*   **Why other options are incorrect:**
+
+    *   A and C only specify one condition (""In Stock"" or ""Out of Stock"" respectively) and not the other, which is insufficient.
+    *   B, while seeming reasonable by including both outputs, fails to explicitly state *when* to use each phrase, relying on potential implied understanding that may not exist or be consistent. Furthermore, the question states the LLM is trained to only output ""In Stock"" or ""Out of Stock"". Option B asks for a JSON format, which the LLM is not trained to do.
+```"
+"[ExamTopics URL](https://www.examtopics.com/discussions/databricks/view/148718-exam-certified-generative-ai-engineer-associate-topic-1/)
+
+A Generative AI Engineer is testing a simple prompt template in LangChain using the code below, but is getting an error.
+
+![Image](https://img.examtopics.com/certified-generative-ai-engineer-associate/image1.png)
+
+The image contains the following code:
+```python
+from langchain.chains import Chain
+from langchain.llms import OpenAI
+from langchain.prompts import PromptTemplate
+
+prompt_template = ""Tell me a {adjective} joke""
+prompt = PromptTemplate(
+    input_variables=[""adjective""], template=prompt_template
+)
+
+chain = Chain(llm=OpenAI, prompt=prompt)
+chain.run(""lame"")
+```
+
+Assuming the API key was properly defined, what change does the Generative AI Engineer need to make to fix their chain?
+
+A.
+![Image](https://img.examtopics.com/certified-generative-ai-engineer-associate/image2.png)
+
+B.
+![Image](https://img.examtopics.com/certified-generative-ai-engineer-associate/image3.png)
+
+C.
+![Image](https://img.examtopics.com/certified-generative-ai-engineer-associate/image4.png)
+
+D.
+![Image](https://img.examtopics.com/certified-generative-ai-engineer-associate/image5.png)","D. Option D is correct. The original code and options A, B, and C are using `Chain`, which is not the correct class to use.  The correct class to use is `LLMChain`.  `LLMChain` is specifically designed to connect a language model (LLM) with a prompt.  It takes the LLM and prompt as arguments. The corrected code looks like this:
+
+```python
+from langchain.chains import LLMChain
+from langchain_community.llms import OpenAI
+from langchain_core.prompts import PromptTemplate
+
+prompt_template = ""Tell me a {adjective} joke""
+prompt = PromptTemplate(
+    input_variables=[""adjective""], template=prompt_template
+)
+
+llm = LLMChain(llm=OpenAI(), prompt=prompt)
+```"
+"****
+
+A Generative AI Engineer is designing an LLM-powered live sports commentary platform. The platform provides real-time updates and LLM-generated analyses for any users who would like to have live summaries, rather than reading a series of potentially outdated news articles.
+
+Which tool below will give the platform access to real-time data for generating game analyses based on the latest game scores?
+
+A. DatabricksIQ
+B. Foundation Model APIs
+C. Feature Serving
+D. AutoML
+
+[https://www.examtopics.com/discussions/databricks/view/148834-exam-certified-generative-ai-engineer-associate-topic-1/](https://www.examtopics.com/discussions/databricks/view/148834-exam-certified-generative-ai-engineer-associate-topic-1/)
+
+**","**
+
+The correct answer is **C. Feature Serving.**
+
+*   **Why C is correct:** Feature serving is designed to provide real-time features to machine learning models. This makes it ideal for ingesting live sports data (scores, statistics, etc.) and making it available for generating real-time analysis.
+
+*   **Why other options are wrong:**
+    *   **A. DatabricksIQ:** Is more focused on model development and optimization, not real-time data provisioning.
+    *   **B. Foundation Model APIs:** Provides access to LLMs, but doesn't handle the ingestion and provision of real-time data. It allows you to use the model's features, but is not suitable for collecting real-time sports data directly.
+    *   **D. AutoML:** Is focused on automating the machine learning pipeline, not real-time data access."
+"[https://www.examtopics.com/discussions/databricks/view/148866-exam-certified-generative-ai-engineer-associate-topic-1/](https://www.examtopics.com/discussions/databricks/view/148866-exam-certified-generative-ai-engineer-associate-topic-1/)
+
+When developing an LLM application, it’s crucial to ensure that the data used for training the model complies with licensing requirements to avoid legal risks.
+
+Which action is NOT appropriate to avoid legal risks?
+
+A. Reach out to the data curators directly before you have started using the trained model to let them know.
+B. Use any available data you personally created which is completely original and you can decide what license to use.
+C. Only use data explicitly labeled with an open license and ensure the license terms are followed.
+D. Reach out to the data curators directly after you have started using the trained model to let them know.","D. Reaching out to data curators *after* you've already started using the trained model is not appropriate. Licensing checks and permissions should be verified *before* using the data to avoid potential legal issues. Options A, B, and C are appropriate actions to ensure compliance. Specifically, using your own original data (B) allows you to control the licensing. Using openly licensed data (C), while adhering to the license, is also appropriate. Contacting the data curators before use (A) is a proactive way to ensure compliance."
+"A Generative AI Engineer is developing a chatbot designed to assist users with insurance-related queries. The chatbot is built on a large language model (LLM) and is conversational. However, to maintain the chatbot’s focus and to comply with company policy, it must not provide responses to questions about politics. Instead, when presented with political inquiries, the chatbot should respond with a standard message:
+
+“Sorry, I cannot answer that. I am a chatbot that can only answer questions around insurance.”
+
+Which framework type should be implemented to solve this?
+
+A. Safety Guardrail
+B. Security Guardrail
+C. Contextual Guardrail
+D. Compliance Guardrail
+
+[https://www.examtopics.com/discussions/databricks/view/148874-exam-certified-generative-ai-engineer-associate-topic-1/](https://www.examtopics.com/discussions/databricks/view/148874-exam-certified-generative-ai-engineer-associate-topic-1/)","The correct answer is A. Safety Guardrail.
+
+*   **Why A is correct:** Safety Guardrails are designed to prevent a model from generating harmful, inappropriate, or off-topic content, which aligns with the need to avoid political discussions as per company policy.
+*   **Why B is incorrect:** Security Guardrails focus on protecting the system from vulnerabilities and unauthorized access, not content filtering.
+*   **Why C is incorrect:** Contextual Guardrails primarily ensure the chatbot stays within its intended domain (insurance) in general, but this scenario involves explicitly forbidding a topic (politics).
+*   **Why D is incorrect:** Compliance Guardrails is close, however Safety guardrails better describe the action of restricting certain topics (like politics) to prevent harmful or inappropriate outputs, and enforce ethical or policy-based boundaries."
+"****
+
+A Generative Al Engineer is responsible for developing a chatbot to enable their company’s internal HelpDesk Call Center team to more quickly find related tickets and provide resolution. While creating the GenAI application work breakdown tasks for this project, they realize they need to start planning which data sources (either Unity Catalog volume or Delta table) they could choose for this application. They have collected several candidate data sources for consideration:
+*   `call_rep_history`: a Delta table with primary keys `representative_id`, `call_id`. This table is maintained to calculate representatives’ call resolution from fields `call_duration` and `call_start_time`.
+*   `transcript Volume`: a Unity Catalog Volume of all recordings as `*.wav` files, but also a text transcript as `*.txt` files.
+*   `call_cust_history`: a Delta table with primary keys `customer_id`, `cal1_id`. This table is maintained to calculate how much internal customers use the HelpDesk to make sure that the charge back model is consistent with actual service use.
+*   `call_detail`: a Delta table that includes a snapshot of all call details updated hourly. It includes `root_cause` and `resolution` fields, but those fields may be empty for calls that are still active.
+*   `maintenance_schedule` – a Delta table that includes a listing of both HelpDesk application outages as well as planned upcoming maintenance downtimes.
+
+They need sources that could add context to best identify ticket root cause and resolution.
+
+Which TWO sources do that? (Choose two.)
+
+A. `call_cust_history`
+B. `maintenance_schedule`
+C. `call_rep_history`
+D. `call_detail`
+E. `transcript Volume`
+
+[https://www.examtopics.com/discussions/databricks/view/149588-exam-certified-generative-ai-engineer-associate-topic-1/](https://www.examtopics.com/discussions/databricks/view/149588-exam-certified-generative-ai-engineer-associate-topic-1/)
+
+**","**
+
+The correct answers are **D and E**.
+
+*   **D: `call_detail`** This delta table contains the details of the call and has `root_cause` and `resolution` fields. This provides important information to understand and solve the problem.
+*   **E: `transcript Volume`** This Unity catalog volume includes text transcriptions of conversations with customers. Provide specific details related to your customer's issue to help determine the root cause.
+
+**Why other options are wrong:**
+
+*   **A: `call_cust_history`** This table is used for chargeback calculations and doesn't directly contribute to identifying the root cause or resolution of tickets.
+*   **B: `maintenance_schedule`** While helpful for understanding outages, this doesn't provide specific information about individual ticket root causes and resolutions.
+*   **C: `call_rep_history`** This table focuses on representative performance metrics, not on the root cause or resolution of customer issues."
+"[https://www.examtopics.com/discussions/databricks/view/149795-exam-certified-generative-ai-engineer-associate-topic-1/](https://www.examtopics.com/discussions/databricks/view/149795-exam-certified-generative-ai-engineer-associate-topic-1/)
+
+A Generative Al Engineer is creating an LLM-based application. The documents for its retriever have been chunked to a maximum of 512 tokens each. The Generative Al Engineer knows that cost and latency are more important than quality for this application. They have several context length levels to choose from. Which will fulfill their need?
+
+A. context length 514; smallest model is 0.44GB and embedding dimension 768
+B. context length 2048: smallest model is 11GB and embedding dimension 2560
+C. context length 32768: smallest model is 14GB and embedding dimension 4096
+D. context length 512: smallest model is 0.13GB and embedding dimension 384","D is the correct answer. Since cost and latency are prioritized over quality, the smallest model with a context length of 512 tokens will be the most efficient.
+
+**Why D is correct:** The prompt explicitly states the need for low cost and low latency. Option D offers a context length of 512, which accommodates the 512 token chunk size, and it also has the smallest model size (0.13GB) leading to lower latency and cost.
+
+**Why other options are wrong:**
+*   **A:** While context length 514 is close to 512, the model size of 0.44GB is larger than Option D, implying higher cost and latency.
+*   **B and C:** These options have significantly larger context lengths (2048 and 32768) and model sizes (11GB and 14GB), which would lead to substantially higher cost and latency, contradicting the stated requirements."
+"[ExamTopics URL](https://www.examtopics.com/discussions/databricks/view/149988-exam-certified-generative-ai-engineer-associate-topic-1/)
+
+A Generative AI Engineer is designing a RAG application for answering user questions on technical regulations as they learn a new sport. What are the steps needed to build this RAG application and deploy it?
+
+A. Ingest documents from a source –> Index the documents and saves to Vector Search –> User submits queries against an LLM –> LLM retrieves relevant documents –> Evaluate model –> LLM generates a response –> Deploy it using Model Serving
+B. Ingest documents from a source –> Index the documents and save to Vector Search –> User submits queries against an LLM –> LLM retrieves relevant documents –> LLM generates a response -> Evaluate model –> Deploy it using Model Serving
+C. Ingest documents from a source –> Index the documents and save to Vector Search –> Evaluate model –> Deploy it using Model Serving
+D. User submits queries against an LLM –> Ingest documents from a source –> Index the documents and save to Vector Search –> LLM retrieves relevant documents –> LLM generates a response –> Evaluate model –> Deploy it using Model Serving","B. **Correct**. The correct sequence of steps for building and deploying a RAG application is: 1. Ingest documents, 2. Index and store them in a Vector Search, 3. The user submits a query, 4. The LLM retrieves relevant documents from the Vector Search, 5. The LLM generates a response, 6. Evaluate the model, and 7. Deploy the model.
+
+**Why other options are wrong:**
+
+*   **A:** The step ""User submits queries against an LLM"" should occur *before* the LLM retrieves relevant documents. The user query initiates the retrieval process.
+*   **C:** This option skips the crucial steps of user query, document retrieval, and response generation by the LLM, and prematurely evaluates the model without it going through all the steps of the RAG process.
+*   **D:** The order is incorrect. You can't submit queries *before* ingesting and indexing the documents. The data needs to be available before queries can be made. Also, LLM has to generate a response *before* the model can be evaluated."
+"[https://www.examtopics.com/discussions/databricks/view/150014-exam-certified-generative-ai-engineer-associate-topic-1/](https://www.examtopics.com/discussions/databricks/view/150014-exam-certified-generative-ai-engineer-associate-topic-1/)
+
+A Generative AI Engineer just deployed an LLM application at a digital marketing company that assists with answering customer service inquiries.
+
+Which metric should they monitor for their customer service LLM application in production?
+
+A. Number of customer inquiries processed per unit of time
+B. Energy usage per query
+C. Final perplexity scores for the training of the model
+D. HuggingFace Leaderboard values for the base LLM","A. The number of customer inquiries processed per unit of time is the correct metric to monitor. This directly reflects the application's performance and efficiency in handling customer service inquiries in a production environment.
+
+*   **Why A is correct:** Monitoring the number of inquiries processed provides insight into the application's throughput and ability to meet customer service demands.
+*   **Why B is wrong:** Energy usage per query is more relevant for cost optimization or environmental impact assessment, not directly measuring customer service performance.
+*   **Why C is wrong:** Perplexity scores are used during model training to evaluate the model's predictive capability, not during production monitoring of customer service applications.
+*   **Why D is wrong:** HuggingFace Leaderboard values are useful during the model selection/development phase, not for monitoring the application's performance in a production environment."
+"```markdown
+ A Generative AI Engineer is building a Generative AI system that suggests the best matched employee team member to newly scoped projects. The team member is selected from a very large team. The match should be based upon project date availability and how well their employee profile matches the project scope. Both the employee profile and project scope are unstructured text.
+How should the Generative Al Engineer architect their system?
+A. Create a tool for finding available team members given project dates. Embed all project scopes into a vector store, perform a retrieval using team member profiles to find the best team member.
+B. Create a tool for finding team member availability given project dates, and another tool that uses an LLM to extract keywords from project scopes. Iterate through available team members’ profiles and perform keyword matching to find the best available team member.
+C. Create a tool to find available team members given project dates. Create a second tool that can calculate a similarity score for a combination of team member profile and the project scope. Iterate through the team members and rank by best score to select a team member.
+D. Create a tool for finding available team members given project dates. Embed team profiles into a vector store and use the project scope and filtering to perform retrieval to find the available best matched team members.
+
+[https://www.examtopics.com/discussions/databricks/view/150015-exam-certified-generative-ai-engineer-associate-topic-1/](https://www.examtopics.com/discussions/databricks/view/150015-exam-certified-generative-ai-engineer-associate-topic-1/)","D. Create a tool for finding available team members given project dates. Embed team profiles into a vector store and use the project scope and filtering to perform retrieval to find the available best matched team members.
+
+Explanation:
+
+*   **Why D is correct:** Embedding team profiles into a vector store allows for efficient similarity searches against the project scope. Given the ""very large team,"" this approach scales much better than iterating through all team members. Filtering by availability *before* the vector search improves efficiency.
+*   **Why A is incorrect:** Embedding project scopes and using team member profiles for retrieval is less efficient because the number of projects is likely smaller than the number of team members, so you'd rather embed the larger of the 2, being team members in this scenario.
+*   **Why B is incorrect:** Keyword matching is less effective than semantic similarity search (using embeddings) for unstructured text. Iterating through all available team members also doesn't scale well.
+*   **Why C is incorrect:** Iterating through all team members to calculate similarity scores, as suggested by option C, does not scale well, especially given the ""very large team"".
+
+```"
+"[https://www.examtopics.com/discussions/databricks/view/150066-exam-certified-generative-ai-engineer-associate-topic-1/](https://www.examtopics.com/discussions/databricks/view/150066-exam-certified-generative-ai-engineer-associate-topic-1/)
+
+A Generative AI Engineer has a provisioned throughput model serving endpoint as part of a RAG application and would like to monitor the serving endpoint’s incoming requests and outgoing responses. The current approach is to include a micro-service in between the endpoint and the user interface to write logs to a remote server.
+
+Which Databricks feature should they use instead which will perform the same task?
+
+A. Vector Search
+B. Lakeview
+C. DBSQL
+D. Inference Tables","D. Inference Tables are designed to store and manage prediction results, making them ideal for logging inferencing results, request data, response data, and other related information into Delta tables for monitoring purposes. Vector Search is for similarity search, Lakeview is for creating dashboards, and DBSQL is for querying data; none of these directly address logging incoming requests and outgoing responses from a serving endpoint."
+"[Exam Page](https://www.examtopics.com/discussions/databricks/view/150114-exam-certified-generative-ai-engineer-associate-topic-1/)
+
+A Generative Al Engineer is building a system which will answer questions on latest stock news articles. Which will NOT help with ensuring the outputs are relevant to financial news?
+
+A. Implement a comprehensive guardrail framework that includes policies for content filters tailored to the finance sector.
+B. Increase the compute to improve processing speed of questions to allow greater relevancy analysis
+C. Implement a profanity filter to screen out offensive language.
+D. Incorporate manual reviews to correct any problematic outputs prior to sending to the users","B. Increasing compute will improve processing speed, but not the relevancy of the answers. Relevancy depends on data sources, retrieval methods, and filtering mechanisms, not processing speed.
+
+*   **Why B is correct:** Increasing compute power primarily affects processing speed, not the relevance of the information.
+*   **Why A is wrong:** A guardrail framework tailored to finance can filter content and ensure relevance.
+*   **Why C is wrong:** A profanity filter, while improving the quality of the output, doesn't directly ensure relevance to financial news, but it does assist by filtering out items that are not.
+*   **Why D is wrong:** Manual reviews directly address relevance by identifying and correcting irrelevant outputs."
+"**** [https://www.examtopics.com/discussions/databricks/view/150144-exam-certified-generative-ai-engineer-associate-topic-1/](https://www.examtopics.com/discussions/databricks/view/150144-exam-certified-generative-ai-engineer-associate-topic-1/)
+
+A Generative AI Engineer has been asked to build an LLM-based question-answering application. The application should take into account new documents that are frequently published. The engineer wants to build this application with the least cost and least development effort and have it operate at the lowest cost possible.
+
+Which combination of chaining components and configuration meets these requirements?
+
+A. For the application a prompt, a retriever, and an LLM are required. The retriever output is inserted into the prompt which is given to the LLM to generate answers.
+B. The LLM needs to be frequently with the new documents in order to provide most up-to-date answers.
+C. For the question-answering application, prompt engineering and an LLM are required to generate answers.
+D. For the application a prompt, an agent and a fine-tuned LLM are required. The agent is used by the LLM to retrieve relevant content that is inserted into the prompt which is given to the LLM to generate answers.
+
+**","**
+
+A is the correct answer. A prompt, a retriever, and an LLM are the best combination. The retriever retrieves information from new documents and inserts it into the prompt, which is then passed to the LLM. This provides up-to-date information while minimizing cost and development effort.
+
+*   **Why A is correct:** It outlines an efficient architecture leveraging retrieval augmented generation (RAG). The retriever efficiently pulls relevant context from the new documents, and this context is injected into the prompt given to the LLM. This provides up-to-date answers without retraining the LLM.
+*   **Why B is incorrect:** It describes the update frequency of LLM, but lacks a description of the actual application architecture.
+*   **Why C is incorrect:** It only mentions prompt engineering and LLM, and doesn't explain how to handle updates for new documents.
+*   **Why D is incorrect:** While agents can be useful, they add complexity and cost. Fine-tuning is also more costly than using a retriever to provide context."
+"[https://www.examtopics.com/discussions/databricks/view/150265-exam-certified-generative-ai-engineer-associate-topic-1/](https://www.examtopics.com/discussions/databricks/view/150265-exam-certified-generative-ai-engineer-associate-topic-1/)
+
+What is an effective method to preprocess prompts using custom code before sending them to an LLM?
+
+A. Directly modify the LLM’s internal architecture to include preprocessing steps
+B. It is better not to introduce custom code to preprocess prompts as the LLM has not been trained with examples of the preprocessed prompts
+C. Rather than preprocessing prompts, it’s more effective to postprocess the LLM outputs to align the outputs to desired outcomes
+D. Write a MLflow PyFunc model that has a separate function to process the prompts","D. Writing an MLflow PyFunc model with a separate function to process prompts allows for systematic and flexible preprocessing, which can improve the LLM's performance by providing optimized prompts.
+
+*   **Why D is correct:** This method provides a structured and manageable way to preprocess prompts, allowing for experimentation and optimization without altering the LLM itself.
+*   **Why A is wrong:** Modifying the LLM's internal architecture is generally not feasible or recommended, as it's complex and could destabilize the model.
+*   **Why B is wrong:** Preprocessing prompts with custom code can be beneficial if done correctly, as it can improve the quality of the input to the LLM.
+*   **Why C is wrong:** While postprocessing outputs is also useful, preprocessing prompts can prevent undesirable outputs in the first place by providing the LLM with better inputs."
+"[https://www.examtopics.com/discussions/databricks/view/150273-exam-certified-generative-ai-engineer-associate-topic-1/](https://www.examtopics.com/discussions/databricks/view/150273-exam-certified-generative-ai-engineer-associate-topic-1/)
+
+A Generative Al Engineer has already trained an LLM on Databricks and it is now ready to be deployed.
+
+Which of the following steps correctly outlines the easiest process for deploying a model on Databricks?
+
+A. Log the model as a pickle object, upload the object to Unity Catalog Volume, register it to Unity Catalog using MLflow, and start a serving endpoint
+B. Log the model using MLflow during training, directly register the model to Unity Catalog using the MLflow API, and start a serving endpoint
+C. Save the model along with its dependencies in a local directory, build the Docker image, and run the Docker container
+D. Wrap the LLM’s prediction function into a Flask application and serve using Gunicorn","B. Logging the model using MLflow during training, directly registering the model to Unity Catalog using the MLflow API, and starting a serving endpoint is the correct answer because it represents the most efficient and straightforward approach for deploying a model within Databricks. MLflow streamlines the model management process.
+
+*   **Why A is wrong:** Pickling and uploading to Unity Catalog Volumes adds unnecessary steps compared to direct registration via MLflow.
+*   **Why C is wrong:** Building a Docker image and running a container is a more complex deployment method than leveraging MLflow's built-in capabilities.
+*   **Why D is wrong:** Wrapping the model in a Flask application and serving with Gunicorn is another more complex deployment approach compared to using MLflow's serving endpoints."
+"[https://www.examtopics.com/discussions/databricks/view/150267-exam-certified-generative-ai-engineer-associate-topic-1/](https://www.examtopics.com/discussions/databricks/view/150267-exam-certified-generative-ai-engineer-associate-topic-1/)
+
+Which indicator should be considered to evaluate the safety of the LLM outputs when qualitatively assessing LLM responses for a translation use case?
+
+A. The ability to generate responses in code
+B. The similarity to the previous language
+C. The latency of the response and the length of text generated
+D. The accuracy and relevance of the responses","D. The accuracy and relevance of the responses. This is the most appropriate choice. Assessing the safety of an LLM's output necessitates evaluating the accuracy and relevance of its responses. The other options don't directly address safety; code generation (A) isn't inherently a safety concern, similarity to the previous language (B) doesn't guarantee safety, and latency and length (C) are performance metrics, not safety indicators."
+"**** [https://www.examtopics.com/discussions/databricks/view/150271-exam-certified-generative-ai-engineer-associate-topic-1/](https://www.examtopics.com/discussions/databricks/view/150271-exam-certified-generative-ai-engineer-associate-topic-1/)
+
+A Generative Al Engineer has successfully ingested unstructured documents and chunked them by document sections. They would like to store the chunks in a Vector Search index. The current format of the dataframe has two columns: (i) original document file name (ii) an array of text chunks for each document.
+
+What is the most performant way to store this dataframe?
+
+A. Split the data into train and test set, create a unique identifier for each document, then save to a Delta table
+B. Flatten the dataframe to one chunk per row, create a unique identifier for each row, and save to a Delta table
+C. First create a unique identifier for each document, then save to a Delta table
+D. Store each chunk as an independent JSON file in Unity Catalog Volume. For each JSON file, the key is the document section name and the value is the array of text chunks for that section
+
+**","**
+
+B. Flatten the dataframe to one chunk per row, create a unique identifier for each row, and save to a Delta table
+
+*   **Why this is correct:** Flattening the dataframe to one chunk per row and creating a unique identifier for each row maximizes search performance and maintains a manageable structure for the data when storing it in a vector search index.
+
+*   **Why other options are wrong:**
+    *   A: Splitting into train and test sets is irrelevant for storing chunks in a Vector Search Index.
+    *   C: Creating an identifier per document and not per chunk will hinder searchability, as each chunk needs to be individually searchable.
+    *   D: Storing chunks as individual JSON files is less performant and harder to manage than using a Delta table."
+"[ExamTopics URL](https://www.examtopics.com/discussions/databricks/view/150269-exam-certified-generative-ai-engineer-associate-topic-1/)
+
+After changing the response generating LLM in a RAG pipeline from GPT-4 to a model with a shorter context length that the company self-hosts, the Generative AI Engineer is getting the following error:
+![Image](https://img.examtopics.com/certified-generative-ai-engineer-associate/image8.png)
+**The image reads: ""This model's maximum context length is 2048 tokens, however you requested 2462 tokens (2242 in the messages, 220 in the completion). Please reduce the length of the messages or completion.""**
+
+What TWO solutions should the Generative AI Engineer implement without changing the response generating model? (Choose two.)
+
+A. Use a smaller embedding model to generate embeddings
+B. Reduce the maximum output tokens of the new model
+C. Decrease the chunk size of embedded documents
+D. Reduce the number of records retrieved from the vector database
+E. Retrain the response generating model using ALiBi","CD
+
+*   **C: Decrease the chunk size of embedded documents:** This reduces the number of tokens from each document included in the prompt, helping to stay within the model's context length.
+*   **D: Reduce the number of records retrieved from the vector database:** This limits the amount of information passed to the model, also helping to avoid exceeding the token limit.
+
+**Why are other options wrong?**
+
+*   **A:** Using a smaller embedding model affects the quality of the embeddings, but not the number of tokens in the prompt. This will not solve the error message of token overflow.
+*   **B:** Reducing the maximum output tokens limits the response length but doesn't address the token overflow issue caused by the input prompt.
+*   **E:** Retraining the model using ALiBi is a more complex solution and is unnecessary to solve the immediate problem of exceeding the context length."
+"[ExamTopics URL](https://www.examtopics.com/discussions/databricks/view/150266-exam-certified-generative-ai-engineer-associate-topic-1/)
+
+A Generative AI Engineer is developing an LLM application that users can use to generate personalized birthday poems based on their names. Which technique would be most effective in safeguarding the application, given the potential for malicious user inputs?
+
+A. Implement a safety filter that detects any harmful inputs and ask the LLM to respond that it is unable to assist
+B. Reduce the time that the users can interact with the LLM
+C. Ask the LLM to remind the user that the input is malicious but continue the conversation with the user
+D. Increase the amount of compute that powers the LLM to process input faster","A. **Implement a safety filter that detects any harmful inputs and ask the LLM to respond that it is unable to assist** is the most effective technique.
+
+*   **Why A is correct:** Safety filters are designed to identify and block potentially harmful inputs, preventing the LLM from processing or generating harmful content. Responding with a message that assistance is unavailable prevents further interaction with the malicious input.
+*   **Why B is wrong:** Reducing interaction time doesn't prevent the processing of an initial malicious input, it only limits the duration of the potential harm.
+*   **Why C is wrong:** Reminding the user that the input is malicious while continuing the conversation can still lead to the generation of inappropriate content and may escalate the situation.
+*   **Why D is wrong:** Increasing compute power doesn't address the issue of malicious input; it only allows the LLM to process information faster, including malicious inputs."
+"[ExamTopics Databricks Question](https://www.examtopics.com/discussions/databricks/view/150270-exam-certified-generative-ai-engineer-associate-topic-1/)
+
+A Generative Al Engineer is building a RAG application that answers questions about internal documents for the company SnoPen AI.
+The source documents may contain a significant amount of irrelevant content, such as advertisements, sports news, or entertainment news, or content about other companies.
+Which approach is advisable when building a RAG application to achieve this goal of filtering irrelevant information?
+
+A. Keep all articles because the RAG application needs to understand non-company content to avoid answering questions about them.
+B. Include in the system prompt that any information it sees will be about SnoPenAI, even if no data filtering is not performed.
+C. Include in the system prompt that the application is not supposed to answer any questions unrelated to SnoPen AI.
+D. Consolidate all SnoPen AI related documents into a single chunk in the vector database.","The correct answer is C. Including in the system prompt that the application is not supposed to answer any questions unrelated to SnoPen AI effectively filters out irrelevant information by instructing the model to only address queries pertinent to the specified company.
+
+*   **Why C is correct:** This approach directly addresses the problem of irrelevant information by explicitly instructing the model to disregard questions outside the scope of SnoPen AI.
+*   **Why A is incorrect:** Keeping all articles, including irrelevant ones, would not filter out irrelevant information and could confuse the model.
+*   **Why B is incorrect:** Simply stating that the information is about SnoPen AI without data filtering is insufficient, as the model will still be exposed to and potentially influenced by the irrelevant content.
+*   **Why D is incorrect:** Consolidating all SnoPen AI documents into a single chunk might help with retrieving relevant information but doesn't prevent the model from answering questions about irrelevant topics if asked. Also very large chunks may exceed the models context window."
+"[ExamTopics URL](https://www.examtopics.com/discussions/databricks/view/150274-exam-certified-generative-ai-engineer-associate-topic-1/)
+
+A Generative AI Engineer developed an LLM application using the provisioned throughput Foundation Model API. Now that the application is ready to be deployed, they realize their volume of requests are not sufficiently high enough to create their own provisioned throughput endpoint. They want to choose a strategy that ensures the best cost-effectiveness for their application.
+What strategy should the Generative AI Engineer use?
+
+A. Switch to using External Models instead
+B. Deploy the model using pay-per-token throughput as it comes with cost guarantees
+C. Change to a model with a fewer number of parameters in order to reduce hardware constraint issues
+D. Throttle the incoming batch of requests manually to avoid rate limiting issues","**B. Deploy the model using pay-per-token throughput as it comes with cost guarantees** is the best strategy.  Since the request volume is low, paying only for the tokens used is the most cost-effective approach.
+
+*   **Why B is correct:** Pay-per-token ensures you only pay for what you use, maximizing cost-effectiveness when request volume is low compared to provisioned throughput.
+*   **Why the other options are wrong:**
+    *   **A:** Switching to External Models doesn't directly address cost-effectiveness related to request volume. It introduces a different model type.
+    *   **C:** Changing the model parameters might reduce hardware requirements, but it doesn't guarantee cost savings based on actual usage and could impact model performance.
+    *   **D:** Manually throttling requests addresses rate limiting but doesn't impact the underlying cost structure. It doesn't make the usage more cost-effective."
+"**** [https://www.examtopics.com/discussions/databricks/view/150276-exam-certified-generative-ai-engineer-associate-topic-1/](https://www.examtopics.com/discussions/databricks/view/150276-exam-certified-generative-ai-engineer-associate-topic-1/)
+
+A Generative AI Engineer is creating an LLM-powered application that will need access to up-to-date news articles and stock prices. The design requires the use of stock prices which are stored in Delta tables and finding the latest relevant news articles by searching the internet. How should the Generative AI Engineer architect their LLM system?
+
+A. Use an LLM to summarize the latest news articles and lookup stock tickers from the summaries to find stock prices.
+B. Query the Delta table for volatile stock prices and use an LLM to generate a search query to investigate potential causes of the stock volatility.
+C. Download and store news articles and stock price information in a vector store. Use a RAG architecture to retrieve and generate at runtime.
+D. Create an agent with tools for SQL querying of Delta tables and web searching, provide retrieved values to an LLM for generation of response.
+
+**","**
+
+D. Create an agent with tools for SQL querying of Delta tables and web searching, provide retrieved values to an LLM for generation of response.
+
+*   **Why this is correct:** Using an agent with specific tools for SQL querying of Delta tables (for stock prices) and web searching (for news articles) allows the LLM to access up-to-date, real-time information. The agent retrieves the values and provides them to the LLM for generating a response. This is more dynamic and accurate than pre-loading data into a vector store.
+
+*   **Why other options are wrong:**
+    *   **A:** Summarizing news articles and then looking up stock tickers is an inefficient way to retrieve relevant stock prices. The summarization process may lose crucial information and makes the process unnecessarily complicated.
+    *   **B:** Querying for volatile stock prices and then using an LLM to generate search queries is a more specific use case. The initial prompt specified the need for the latest relevant news articles, so this option doesn't fulfill that need entirely.
+    *   **C:** Downloading and storing news articles and stock prices in a vector store creates a static snapshot of the data. It would require frequent updates to remain current and may not be as efficient as directly querying the Delta table and web searching for up-to-date information when needed. Also, RAG is already constructed, agent is most effective inside of it."
+"[https://www.examtopics.com/discussions/databricks/view/150275-exam-certified-generative-ai-engineer-associate-topic-1/](https://www.examtopics.com/discussions/databricks/view/150275-exam-certified-generative-ai-engineer-associate-topic-1/)
+
+A Generative AI Engineer is building an LLM to generate article summaries in the form of a type of poem, such as a haiku, given the article content. However, the initial output from the LLM does not match the desired tone or style.
+
+Which approach will NOT improve the LLM’s response to achieve the desired response?
+
+A. Provide the LLM with a prompt that explicitly instructs it to generate text in the desired tone and style
+B. Use a neutralizer to normalize the tone and style of the underlying documents
+C. Include few-shot examples in the prompt to the LLM
+D. Fine-tune the LLM on a dataset of desired tone and style","B. Using a neutralizer to normalize the tone and style of the underlying documents will not improve the LLM's response. This is because the goal is to generate text with a *specific* tone and style (like a haiku). Neutralizing the source documents will strip away the richness of the content, making it *harder* for the LLM to generate creative, stylistic outputs. Options A, C, and D would all help the LLM to learn the desired tone and style."
+"[https://www.examtopics.com/discussions/databricks/view/150278-exam-certified-generative-ai-engineer-associate-topic-1/](https://www.examtopics.com/discussions/databricks/view/150278-exam-certified-generative-ai-engineer-associate-topic-1/) A Generative AI Engineer is building a RAG application that will rely on context retrieved from source documents that are currently in PDF format. These PDFs can contain both text and images. They want to develop a solution using the least amount of lines of code. Which Python package should be used to extract the text from the source documents?
+
+A. flask
+B. beautifulsoup
+C. unstructured
+D. numpy","C. unstructured. This package allows you to extract text efficiently while minimizing the amount of code. Options A, B, and D are incorrect because flask is a web framework, beautifulsoup is for parsing HTML and XML, and numpy is for numerical computing, none of which are suited for extracting text from PDFs."
+"[ExamTopics URL](https://www.examtopics.com/discussions/databricks/view/150279-exam-certified-generative-ai-engineer-associate-topic-1/)
+
+A Generative AI Engineer received the following business requirements for an external chatbot.
+The chatbot needs to know what types of questions the user asks and routes to appropriate models to answer the questions. For example, the user might ask about upcoming event details. Another user might ask about purchasing tickets for a particular event.
+What is an ideal workflow for such a chatbot?
+
+A. The chatbot should only look at previous event information
+B. There should be two different chatbots handling different types of user queries.
+C. The chatbot should be implemented as a multi-step LLM workflow. First, identify the type of question asked, then route the question to the appropriate model. If it’s an upcoming event question, send the query to a text-to-SQL model. If it’s about ticket purchasing, the customer should be redirected to a payment platform.
+D. The chatbot should only process payments","C. The chatbot should be implemented as a multi-step LLM workflow. First, identify the type of question asked, then route the question to the appropriate model. If it’s an upcoming event question, send the query to a text-to-SQL model. If it’s about ticket purchasing, the customer should be redirected to a payment platform.
+
+**Explanation:**
+
+*   **Why C is correct:** This option provides a structured approach using a multi-step LLM workflow. It addresses the core requirement of understanding the user's question type and directing it to the most suitable model or platform. This is efficient and user-friendly.
+
+*   **Why other options are wrong:**
+    *   **A:** Limiting the chatbot to only previous event information doesn't address the full scope of potential user queries, such as purchasing tickets.
+    *   **B:** Creating two separate chatbots is less efficient and could lead to a fragmented user experience.  It's better to have a single entry point that routes queries appropriately.
+    *   **D:** Focusing only on payment processing ignores other potential user needs, such as event information."
+"[https://www.examtopics.com/discussions/databricks/view/150264-exam-certified-generative-ai-engineer-associate-topic-1/](https://www.examtopics.com/discussions/databricks/view/150264-exam-certified-generative-ai-engineer-associate-topic-1/)
+
+A Generative AI Engineer wants to build an LLM-based solution to help a restaurant improve its online customer experience with bookings by automatically handling common customer inquiries. The goal of the solution is to minimize escalations to human intervention and phone calls while maintaining a personalized interaction. To design the solution, the Generative AI Engineer needs to define the input data to the LLM and the task it should perform.
+
+Which input/output pair will support their goal?
+
+A. Input: Online chat logs; Output: Group the chat logs by users, followed by summarizing each user’s interactions
+B. Input: Online chat logs; Output: Buttons that represent choices for booking details
+C. Input: Customer reviews; Output: Classify review sentiment
+D. Input: Online chat logs; Output: Cancellation options","B. **Correct:** Providing buttons that represent choices for booking details enables the LLM to guide the customer through common inquiries in a structured, automated way, reducing the need for human intervention.
+
+A. **Incorrect:** Summarizing user interactions might provide insights, but it doesn't directly address the goal of automating customer inquiries and providing immediate responses.
+C. **Incorrect:** Classifying review sentiment is valuable for understanding customer feedback, but doesn't directly help automate booking-related inquiries.
+D. **Incorrect:** While providing cancellation options is useful, it only addresses one specific type of inquiry and doesn't provide a comprehensive solution for handling various customer needs."
+"**** [https://www.examtopics.com/discussions/databricks/view/150268-exam-certified-generative-ai-engineer-associate-topic-1/](https://www.examtopics.com/discussions/databricks/view/150268-exam-certified-generative-ai-engineer-associate-topic-1/)
+
+A Generative AI Engineer is developing a patient-facing healthcare-focused chatbot. If the patient’s question is not a medical emergency, the chatbot should solicit more information from the patient to pass to the doctor’s office and suggest a few relevant pre-approved medical articles for reading. If the patient’s question is urgent, direct the patient to calling their local emergency services.
+
+Given the following user input:
+“I have been experiencing severe headaches and dizziness for the past two days.”
+
+Which response is most appropriate for the chatbot to generate?
+
+A. Here are a few relevant articles for your browsing. Let me know if you have questions after reading them.
+B. Please call your local emergency services.
+C. Headaches can be tough. Hope you feel better soon!
+D. Please provide your age, recent activities, and any other symptoms you have noticed along with your headaches and dizziness.
+
+**","**
+
+B. Please call your local emergency services.
+
+*   **Why this is the correct answer:** The prompt states if a question is urgent, the chatbot should direct the patient to emergency services. Severe headaches and dizziness for two days could indicate a serious medical condition requiring immediate attention.
+
+*   **Why other options are wrong:**
+    *   A: Providing articles is only appropriate for non-emergency situations, and the symptoms suggest potential urgency.
+    *   C: This is a dismissive and unhelpful response, especially given the potential severity of the symptoms.
+    *   D: While gathering more information is generally a good practice, delaying emergency care in this scenario could be dangerous. The chatbot should prioritize immediate medical attention."
+"A Generative AI Engineer I using the code below to test setting up a vector store:
+![Image](https://img.examtopics.com/certified-generative-ai-engineer-associate/image7.png)
+Assuming they intend to use Databricks managed embeddings with the default embedding model, what should be the next logical function call?
+A.
+vsc.get_index()
+B.
+vsc.create_delta_sync_index()
+C.
+vsc.create_direct_access_index()
+D.
+vsc.similarity_search()
+[https://www.examtopics.com/discussions/databricks/view/150263-exam-certified-generative-ai-engineer-associate-topic-1/](https://www.examtopics.com/discussions/databricks/view/150263-exam-certified-generative-ai-engineer-associate-topic-1/)","The correct answer is C. `vsc.create_direct_access_index()`
+
+**Explanation:**
+
+*   `create_direct_access_index()` lets you manually add documents and embeddings, which is ideal for testing and minimal setup. It is appropriate when testing the setup of a vector store using Databricks managed embeddings and the default embedding model, especially if you’re not using a Delta table.
+
+**Why other options are wrong:**
+
+*   **A: `vsc.get_index()`** - This assumes an index already exists, which isn't the case in a new setup.
+*   **B: `vsc.create_delta_sync_index()`** - This is used when you already have a Delta table and want your index to automatically sync with it – a better fit for production workflows, not initial testing.
+*   **D: `vsc.similarity_search()`** - Similarity search is performed after the index has been created and populated with data."
+"[https://www.examtopics.com/discussions/databricks/view/150272-exam-certified-generative-ai-engineer-associate-topic-1/](https://www.examtopics.com/discussions/databricks/view/150272-exam-certified-generative-ai-engineer-associate-topic-1/)
+
+A Generative AI Engineer has created a RAG application which can help employees retrieve answers from an internal knowledge base, such as Confluence pages or Google Drive. The prototype application is now working with some positive feedback from internal company testers. Now the Generative Al Engineer wants to formally evaluate the system’s performance and understand where to focus their efforts to further improve the system.
+How should the Generative AI Engineer evaluate the system?
+A.
+Use cosine similarity score to comprehensively evaluate the quality of the final generated answers.
+B.
+Curate a dataset that can test the retrieval and generation components of the system separately. Use MLflow’s built in evaluation metrics to perform the evaluation on the retrieval and generation components.
+C.
+Benchmark multiple LLMs with the same data and pick the best LLM for the job.
+D.
+Use an LLM-as-a-judge to evaluate the quality of the final answers generated.","B. Curating a dataset to test retrieval and generation separately, and using MLflow's built-in evaluation metrics, is the most appropriate approach. By evaluating the retrieval and generation components separately, you can gain a clearer understanding of your system's performance and effectively identify areas for improvement. The other options are wrong because they don't comprehensively and separately evaluate both the retrieval and generation aspects of the RAG system. Cosine similarity (A) only evaluates similarity, benchmarking (C) only focuses on selecting an LLM and LLM-as-a-judge (D) only evaluates the quality of the final answer."
+"[https://www.examtopics.com/discussions/databricks/view/150277-exam-certified-generative-ai-engineer-associate-topic-1/](https://www.examtopics.com/discussions/databricks/view/150277-exam-certified-generative-ai-engineer-associate-topic-1/) A Generative AI Engineer is designing a chatbot for a gaming company that aims to engage users on its platform while its users play online video games. Which metric would help them increase user engagement and retention for their platform?
+
+A. Randomness
+B. Diversity of responses
+C. Lack of relevance
+D. Repetition of responses","B. Diversity of responses.
+
+*   **Why B is correct:** A variety of responses can make users more interested in interacting with the chatbot and keep them on the platform longer, thus increasing engagement and retention.
+*   **Why the other options are wrong:** Randomness (A) may lead to nonsensical or frustrating interactions. Lack of relevance (C) will certainly disengage users. Repetition of responses (D) will bore users and cause them to abandon the chatbot."
+"[https://www.examtopics.com/discussions/databricks/view/150280-exam-certified-generative-ai-engineer-associate-topic-1/](https://www.examtopics.com/discussions/databricks/view/150280-exam-certified-generative-ai-engineer-associate-topic-1/)
+
+A Generative Al Engineer is tasked with developing an application that is based on an open source large language model (LLM). They need a foundation LLM with a large context window.
+
+Which model fits this need?
+
+A. DistilBERT
+B. MPT-30B
+C. Llama2-70B
+D. DBRX","The correct answer is D. DBRX is an open-source LLM developed by Databricks that supports a large context window (up to 32K tokens), making it suitable for applications requiring handling long documents or conversations.
+
+*   **Why D is correct:** DBRX is designed with a large context window (up to 32K tokens).
+*   **Why A is incorrect:** DistilBERT is a smaller, faster transformer model, but does not have a large context window.
+*   **Why B is incorrect:** MPT-30B has an 8k context window, which is smaller than DBRX.
+*   **Why C is incorrect:** Llama2-70B has a context window of 4096 tokens, which is smaller than DBRX."
+"[ExamTopics URL](https://www.examtopics.com/discussions/databricks/view/152048-exam-certified-generative-ai-engineer-associate-topic-1/)
+
+A Generative Al Engineer is tasked with improving the RAG quality by addressing its inflammatory outputs.
+
+Which action would be most effective in mitigating the problem of offensive text outputs?
+
+A. Increase the frequency of upstream data updates
+B. Inform the user of the expected RAG behavior
+C. Restrict access to the data sources to a limited number of users
+D. Curate upstream data properly that includes manual review before it is fed into the RAG system","D. Curate upstream data properly that includes manual review before it is fed into the RAG system.
+
+**Explanation:**
+
+*   **Why D is correct:** Manual review of the upstream data allows for the identification and removal of potentially offensive or inflammatory content *before* it is used to generate responses by the RAG system. This proactive approach directly addresses the root cause of the problem.
+
+*   **Why other options are wrong:**
+
+    *   **A:** Increasing the frequency of data updates might introduce new offensive content or amplify existing issues if the data is not properly curated.
+    *   **B:** Informing users about the expected behavior doesn't solve the problem of offensive outputs; it only manages user expectations after the fact.
+    *   **C:** Restricting access to data sources doesn't address the quality of the data itself. The problem remains if the data contains offensive material, regardless of how many users have access."
+"[ExamTopics URL](https://www.examtopics.com/discussions/databricks/view/152074-exam-certified-generative-ai-engineer-associate-topic-1/)
+
+A Generative Al Engineer has developed an LLM application to answer questions about internal company policies. The Generative AI Engineer must ensure that the application doesn’t hallucinate or leak confidential data.
+
+Which approach should NOT be used to mitigate hallucination or confidential data leakage?
+
+A. Add guardrails to filter outputs from the LLM before it is shown to the user
+B. Fine-tune the model on your data, hoping it will learn what is appropriate and not
+C. Limit the data available based on the user’s access level
+D. Use a strong system prompt to ensure the model aligns with your needs.","B. Fine-tuning the model and *hoping* it will learn what is appropriate is the LEAST effective approach. While fine-tuning can be helpful, it doesn't guarantee the elimination of hallucinations or data leaks. There's no certainty the model will learn what's appropriate and what's not, and the fine-tuned data may still contain sensitive information.
+
+*   **Why A is wrong:** Guardrails actively filter the output, providing a direct mechanism to prevent both hallucination and data leakage.
+*   **Why C is wrong:** Limiting data access based on user level is a standard security practice that directly reduces the risk of confidential data leakage.
+*   **Why D is wrong:** A strong system prompt guides the model's behavior and helps it align with the desired constraints, mitigating hallucination and inappropriate responses."
+"****
+
+A Generative Al Engineer is creating an LLM system that will retrieve news articles from the year 1918 and related to a user's query and summarize them. The engineer has noticed that the summaries are generated well but often also include an explanation of how the summary was generated, which is undesirable.
+
+Which change could the Generative Al Engineer perform to mitigate this issue?
+
+A. Split the LLM output by newline characters to truncate away the summarization explanation.
+B. Tune the chunk size of news articles or experiment with different embedding models.
+C. Revisit their document ingestion logic, ensuring that the news articles are being ingested properly.
+D. Provide few shot examples of desired output format to the system and/or user prompt.
+
+[https://www.examtopics.com/discussions/databricks/view/153568-exam-certified-generative-ai-engineer-associate-topic-1/](https://www.examtopics.com/discussions/databricks/view/153568-exam-certified-generative-ai-engineer-associate-topic-1/)
+
+**","**
+
+D. Providing few-shot examples of the desired output format to the system and/or user prompt is the correct approach.  Few-shot learning directly guides the LLM to produce outputs that conform to a specified format, thus eliminating the unwanted explanation of how the summary was generated.
+
+*   **Why A is wrong:** Splitting the LLM output by newline characters is a brittle and unreliable method. It relies on the explanation always being separated by newline characters, which is not guaranteed. This approach is a hacky fix rather than addressing the underlying issue.
+*   **Why B is wrong:** Tuning chunk size and experimenting with embedding models affects the quality of information retrieval and the relevance of the summaries, not the format of the output. It does not directly address the problem of the LLM including explanations.
+*   **Why C is wrong:** Document ingestion problems would likely lead to incorrect or incomplete summaries. While important, it does not address the LLM's tendency to explain its summarization process."
+"**** [https://www.examtopics.com/discussions/databricks/view/155675-exam-certified-generative-ai-engineer-associate-topic-1/](https://www.examtopics.com/discussions/databricks/view/155675-exam-certified-generative-ai-engineer-associate-topic-1/)
+
+A Generative AI Engineer at an electronics company just deployed a RAG application for customers to ask questions about products that the company carries. However, they received feedback that the RAG response often returns information about an irrelevant product.
+
+What can the engineer do to improve the relevance of the RAG’s response?
+
+A. Assess the quality of the retrieved context
+B. Implement caching for frequently asked questions
+C. Use a different LLM to improve the generated response
+D. Use a different semantic similarity search algorithm
+
+**","**
+
+The correct answer is **D. Use a different semantic similarity search algorithm**.
+
+*   **Why D is correct:** The problem is that the RAG application is retrieving irrelevant information. The semantic similarity search algorithm is responsible for determining which pieces of information are most relevant to the user's query. By changing the algorithm, the engineer can improve the retrieval step and ensure that the RAG application retrieves more relevant information.
+
+*   **Why other options are wrong:**
+    *   **A. Assess the quality of the retrieved context:** While assessing the quality can help diagnose the problem, it doesn't directly fix the retrieval of irrelevant context.
+    *   **B. Implement caching for frequently asked questions:** Caching addresses performance and speed, not relevance of the retrieved context.
+    *   **C. Use a different LLM to improve the generated response:** The issue is with the retrieval of relevant context, not the generation of the response by the LLM."
+"[https://www.examtopics.com/discussions/databricks/view/272745-exam-certified-generative-ai-engineer-associate-topic-1/](https://www.examtopics.com/discussions/databricks/view/272745-exam-certified-generative-ai-engineer-associate-topic-1/)
+
+A Generative AI Engineer has been asked to design an LLM-based application that accomplishes the following business objective: answer employee HR questions using HR PDF documentation.
+
+Which set of high level tasks should the Generative AI Engineer's system perform?
+
+A. Calculate averaged embeddings for each HR document, compare embeddings to user query to find the best document. Pass the best document with the user query into an LLM with a large context window to generate a response to the employee.
+B. Use an LLM to summarize HR documentation. Provide summaries of documentation and user query into an LLM with a large context window to generate a response to the user.
+C. Create an interaction matrix of historical employee questions and HR documentation. Use ALS to factorize the matrix and create embeddings. Calculate the embeddings of new queries and use them to find the best HR documentation. Use an LLM to generate a response to the employee question based upon the documentation retrieved.
+D. Split HR documentation into chunks and embed into a vector store. Use the employee question to retrieve best matched chunks of documentation, and use the LLM to generate a response to the employee based upon the documentation retrieved.","D is the correct answer. The best approach is to split the HR documentation into chunks, embed these chunks into a vector store, use the employee's question to retrieve the best-matched chunks, and then use an LLM to generate a response based on the retrieved documentation. This is a standard Retrieval-Augmented Generation (RAG) approach.
+
+*   **Why D is correct:** This option outlines the standard RAG approach, which involves splitting documents into chunks, embedding those chunks into a vector store, retrieving relevant chunks based on the user query, and using an LLM to generate a response. This is a well-established and effective method for question answering over documents.
+*   **Why A is incorrect:** Averaging embeddings for each HR document loses granular information. Comparing averaged document embeddings to a query embedding might not accurately identify the most relevant information.
+*   **Why B is incorrect:** Summarizing the entire HR documentation first and then feeding the summaries and query into an LLM could lose crucial details and context needed for answering specific questions accurately.
+*   **Why C is incorrect:** Creating an interaction matrix and using ALS factorization is overly complex for the initial setup. ALS is useful, as the discussion correctly observes, to improve later iterations of the application after a vetted body of questions/answers exists to train from. This approach is more appropriate when historical employee questions are available and the system needs to learn from past interactions, but it's not the simplest or most efficient for a first design."
+"[https://www.examtopics.com/discussions/databricks/view/272735-exam-certified-generative-ai-engineer-associate-topic-1/](https://www.examtopics.com/discussions/databricks/view/272735-exam-certified-generative-ai-engineer-associate-topic-1/)
+
+A Generative Al Engineer would like an LLM to generate formatted JSON from emails. This will require parsing and extracting the following information: order ID, date, and sender email. Here’s a sample email:
+
+![Image](https://img.examtopics.com/certified-generative-ai-engineer-associate/image6.png)
+
+Image Text:
+From:[email protected]
+Date: April 16, 2024
+Subject: Order Confirmation - RE987D
+
+They will need to write a prompt that will extract the relevant information in JSON format with the highest level of output accuracy.
+
+Which prompt will do that?
+
+A. You will receive customer emails and need to extract date, sender email, and order ID. You should return the date, sender email, and order ID information in JSON format.
+B. You will receive customer emails and need to extract date, sender email, and order ID. Return the extracted information in JSON format.
+Here’s an example: {“date”: “April 16, 2024”, “sender_email”: “[email protected]”, “order_id”: “RE987D”}
+C. You will receive customer emails and need to extract date, sender email, and order ID. Return the extracted information in a human-readable format.
+D. You will receive customer emails and need to extract date, sender email, and order IReturn the extracted information in JSON format.","B. Option B is correct because it provides an example of the desired JSON output format, which helps the LLM understand the expected structure and increases accuracy. Options A and D are incorrect because they don't provide a clear example of the JSON output format that the model needs to follow. Option C is incorrect because it asks for a human-readable format instead of JSON."
+"[https://www.examtopics.com/discussions/databricks/view/272752-exam-certified-generative-ai-engineer-associate-topic-1/](https://www.examtopics.com/discussions/databricks/view/272752-exam-certified-generative-ai-engineer-associate-topic-1/) A team wants to serve a code generation model as an assistant for their software developers. It should support multiple programming languages. Quality is the primary objective. Which of the Databricks Foundation Model APIs, or models available in the Marketplace, would be the best fit?
+
+A. Llama2-70b
+B. BGE-large
+C. MPT-7b
+D. CodeLlama-34B","D. CodeLlama-34B is the best fit because it's specifically designed for code generation, supports multiple programming languages, and prioritizes quality. The other options are not primarily focused on code generation: Llama2-70b is a general-purpose language model, BGE-large is for text embeddings, and MPT-7b is a general-purpose model that may not prioritize code generation quality."
+"[https://www.examtopics.com/discussions/databricks/view/303123-exam-certified-generative-ai-engineer-associate-topic-1/](https://www.examtopics.com/discussions/databricks/view/303123-exam-certified-generative-ai-engineer-associate-topic-1/)
+
+A Generative AI Engineer is ready to deploy an LLM application written using Foundation Model APIs. They want to follow security best practices for production scenarios.
+
+Which authentication method should they choose?
+
+A. Use OAuth machine-to-machine authentication
+B. Use an access token belonging to service principals
+C. Use an access token belonging to any workspace user
+D. Use a frequently rotated access token belonging to either a workspace user or a service principal","A. Use OAuth machine-to-machine authentication
+
+OAuth machine-to-machine (M2M) is a best-practice authentication mechanism widely used across cloud platforms because it doesn't rely on individual user accounts, making it more secure for production environments. While Databricks Foundation Model APIs might not directly support OAuth M2M flows natively *currently*, the question asks for best practices in production scenarios and does not restrict itself to Databricks Foundation Model being used here.
+
+*   **Why A is correct:** OAuth M2M is the most secure, industry-standard approach for application authentication.
+*   **Why B is wrong:** Access tokens belonging to service principals, while better than user tokens, are still less secure than OAuth M2M.
+*   **Why C is wrong:** Using access tokens belonging to any workspace user is highly insecure, as it ties the application's access to an individual's account.
+*   **Why D is wrong:** Rotating access tokens helps, but it's still less secure than using OAuth M2M, and doesn't address the fundamental issue of tying access to a user or service principal token."
+"[https://www.examtopics.com/discussions/databricks/view/303238-exam-certified-generative-ai-engineer-associate-topic-1/](https://www.examtopics.com/discussions/databricks/view/303238-exam-certified-generative-ai-engineer-associate-topic-1/)
+
+A Generative AI Engineer has just deployed an LLM application at a manufacturing company that assists with answering customer service inquiries. They need to identify the key enterprise metrics to monitor the application in production.
+
+Which is NOT a metric they will implement for their customer service LLM application in production?
+
+A. Massive Multi-task Language Understanding (MMLU) score
+B. Number of customer inquiries processed per unit of time
+C. Factual accuracy of the response
+D. Time taken for LLM to generate a response","A. MMLU score. MMLU is a benchmarking score used during LLM pre-training and evaluation, not something you’d monitor in a deployed, real-world production setting. Options B, C, and D are relevant metrics for monitoring a production LLM application."
+"[https://www.examtopics.com/discussions/databricks/view/303249-exam-certified-generative-ai-engineer-associate-topic-1/](https://www.examtopics.com/discussions/databricks/view/303249-exam-certified-generative-ai-engineer-associate-topic-1/) A Generative AI Engineer has created a RAG application which can help employees interpret HR documentation. The prototype application is now working with some positive feedback from internal company testers. Now the Generative AI Engineer wants to formally evaluate the system’s performance and understand where to focus their efforts to further improve the system. How should the Generative AI Engineer evaluate the system?
+
+A. Use ROUGE score to comprehensively evaluate the quality of the final generated answers.
+B. Use an LLM-as-a-judge to evaluate the quality of the final answers generated.
+C. Curate a dataset that can test the retrieval and generation components of the system separately. Use MLflow’s built in evaluation metrics to perform the evaluation on the retrieval and generation components.
+D. Benchmark multiple LLMs with the same data and pick the best LLM for the job.","C. Curating a dataset to test retrieval and generation components separately, using MLflow's evaluation metrics, is the best approach. This isolates variables, enabling a methodical debugging and optimization process for the RAG system. Options A, B, and D do not offer this modular and scientific approach to debugging and optimizing the RAG system by isolating variables and evaluating each part methodically."
+"[https://www.examtopics.com/discussions/databricks/view/303262-exam-certified-generative-ai-engineer-associate-topic-1/](https://www.examtopics.com/discussions/databricks/view/303262-exam-certified-generative-ai-engineer-associate-topic-1/)
+
+A Generative AI Engineer is building a production-ready LLM system which replies directly to customers. The solution makes use of the Foundation Model API via provisioned throughput. They are concerned that the LLM could potentially respond in a toxic or otherwise unsafe way. They also wish to perform this with the least amount of effort.
+
+Which approach will do this?
+
+A. Ask users to report unsafe responses
+B. Host Llama Guard on Foundation Model API and use it to detect unsafe responses.
+C. Add some LLM calls to their chain to detect unsafe content before returning text
+D. Add a regex expression on inputs and outputs to detect unsafe responses.","B. Host Llama Guard on Foundation Model API and use it to detect unsafe responses.
+
+By enabling Databricks’ built-in Llama Guard directly on your Foundation Model API endpoint, you get out-of-the-box toxicity and safety checks with zero changes to your application code. The guard runs before responses are returned, blocking or redacting unsafe content according to its policy. This approach requires the least effort compared to adding custom detection calls or regex rules, and is far more proactive than relying on user reports."
+"[https://www.examtopics.com/discussions/databricks/view/303261-exam-certified-generative-ai-engineer-associate-topic-1/](https://www.examtopics.com/discussions/databricks/view/303261-exam-certified-generative-ai-engineer-associate-topic-1/)
+
+A Generative AI Engineer is developing a RAG system for their company to perform internal document Q&A for structured HR policies, but the answers returned are frequently incomplete and unstructured. It seems that the retriever is not returning all relevant context. The Generative AI Engineer has experimented with different embedding and response generating LLMs but that did not improve results.
+
+Which TWO options could be used to improve the response quality? (Choose two.)
+
+A. Add the section header as a prefix to chunks
+B. Split the document by sentence
+C. Use a larger embedding model
+D. Increase the document chunk size
+E. Fine tune the response generation model","The correct answers are A and D.
+
+*   **A: Add the section header as a prefix to chunks:** Including section headers provides additional context and semantic signals to the retriever, improving its ability to match queries to the relevant policy area within structured documents.
+
+*   **D: Increase the document chunk size:** Larger chunk sizes allow each chunk to contain more contiguous context. This helps the retriever return more complete sections, especially when key details might otherwise be split across multiple smaller chunks.
+
+**Why other options are wrong:**
+
+*   **B: Split the document by sentence:** Splitting by sentence could lead to chunks that lack sufficient context, further fragmenting the information and hindering retrieval.
+*   **C: Use a larger embedding model:** The engineer has already experimented with different embedding LLMs, indirectly addressing model size, without resolving the issue of missing context.
+*   **E: Fine tune the response generation model:** While tuning generation can improve formatting and coherence, it does not address the core problem of the retriever failing to provide complete relevant context."
+"****
+
+[https://www.examtopics.com/discussions/databricks/view/303264-exam-certified-generative-ai-engineer-associate-topic-1/](https://www.examtopics.com/discussions/databricks/view/303264-exam-certified-generative-ai-engineer-associate-topic-1/)
+
+A Generative AI Engineer is using an LLM to classify species of edible mushrooms based on text descriptions of certain features. The model is returning accurate responses in testing and the Generative AI Engineer is confident they have the correct list of possible labels, but the output frequently contains additional reasoning in the answer when the Generative AI Engineer only wants to return the label with no additional text.
+
+Which action should they take to elicit the desired behavior from this LLM?
+
+A. Use few shot prompting to instruct the model on expected output format
+B. Use zero shot prompting to instruct the model on expected output format
+C. Use zero shot chain-of-thought prompting to prevent a verbose output format
+D. Use a system prompt to instruct the model to be succinct in its answer
+
+**","**
+
+A. Use few shot prompting to instruct the model on expected output format.
+
+Few-shot prompting provides the model with several examples of input descriptions paired with the desired output format (just the mushroom label). This demonstrates the exact format needed and is more reliable than zero-shot instructions or a generic system message. Options B, C and D are wrong because, by providing a small number of examples that show exactly how you want the model to respond, you teach the LLM the desired output pattern, which tends to be more reliable than a single zero-shot instruction or a generic “be succinct” system message, because the model sees concrete input-output pairs demonstrating the exact format you need."
+"**** [https://www.examtopics.com/discussions/databricks/view/303266-exam-certified-generative-ai-engineer-associate-topic-1/](https://www.examtopics.com/discussions/databricks/view/303266-exam-certified-generative-ai-engineer-associate-topic-1/)
+
+A Generative AI Engineer is building a RAG application that answers questions about technology-related news articles. The source documents may contain a significant amount of irrelevant content, such as advertisements, sports news, or entertainment news.
+
+Which approach is NOT advisable for building a RAG application focused on answering technology-only questions?
+
+A. Include in the system prompt that the application is not supposed to answer any questions unrelated to technology.
+B. Filter out irrelevant news articles in the retrieval process.
+C. Keep all news articles because the RAG application needs to understand non-technological content to avoid answering questions about them.
+D. Filter out irrelevant news articles in the upstream document database.
+
+**","**
+
+C. **Keeping all news articles because the RAG application needs to understand non-technological content to avoid answering questions about them is NOT advisable.**
+
+*   **Why C is correct:** The RAG application is focused on technology-related questions. Keeping irrelevant news articles (advertisements, sports, entertainment) introduces noise and degrades performance. The application does not need to understand non-technological content to avoid answering questions about them; filtering is the better approach. This follows the principle of ""garbage in, garbage out"".
+
+*   **Why other options are wrong:**
+    *   A: Including instructions in the system prompt to avoid non-technology questions is a valid approach to guide the application's behavior.
+    *   B: Filtering out irrelevant articles during retrieval is effective in reducing noise and improving relevance.
+    *   D: Filtering irrelevant articles in the document database is an excellent upstream approach to ensure that only relevant information is stored and used."
+"[https://www.examtopics.com/discussions/databricks/view/303269-exam-certified-generative-ai-engineer-associate-topic-1/](https://www.examtopics.com/discussions/databricks/view/303269-exam-certified-generative-ai-engineer-associate-topic-1/)
+
+A Generative AI Engineer is working with a retail company that wants to enhance its customer experience by automatically handling common customer inquiries. They are working on an LLM-powered AI solution that should improve response times while maintaining a personalized interaction. They want to define the appropriate input and LLM task to do this.
+
+Which input/output pair will do this?
+
+A. Input: Customer service chat logs; Output: Group the chat logs by users, followed by summarizing each user’s interactions, then respond
+B. Input: Customer service chat logs; Output: Find the answers to similar questions and respond with a summary
+C. Input: Customer reviews; Output: Classify review sentiment
+D. Input: Customer reviews; Output: Group the reviews by users and aggregate per-user average rating, then respond","A is correct.
+
+**Explanation:**
+
+*   **Why A is correct:** Option A directly addresses the company's goals by enabling both faster and more personalized customer support. Grouping chat logs by users and summarizing interactions allows for personalized responses.
+
+*   **Why other options are incorrect:**
+    *   B lacks the personalization aspect.
+    *   C and D focus on reviews instead of support interactions.
+    *   Additionally, C and D do not group by user, which is critical for personalized service."
+"[https://www.examtopics.com/discussions/databricks/view/303270-exam-certified-generative-ai-engineer-associate-topic-1/](https://www.examtopics.com/discussions/databricks/view/303270-exam-certified-generative-ai-engineer-associate-topic-1/) A Generative AI Engineer has built an LLM-based system that will automatically translate user text between two languages. They now want to benchmark multiple LLM’s on this task and pick the best one. They have an evaluation set with known high quality translation examples. They want to evaluate each LLM using the evaluation set with a performant metric. Which metric should they choose for this evaluation?
+
+A. BLEU metric
+B. NDCG metric
+C. ROUGE metric
+D. RECALL metric","A. BLEU (Bilingual Evaluation Understudy) is the correct metric. BLEU is designed for evaluating the quality of machine-translated text by comparing it to one or more reference translations. The other options are incorrect because: NDCG (Normalized Discounted Cumulative Gain) is used for ranking tasks. ROUGE is primarily used for text summarization tasks. Recall is a general metric for information retrieval, but not specifically designed for translation quality."
+"[https://www.examtopics.com/discussions/databricks/view/303306-exam-certified-generative-ai-engineer-associate-topic-1/](https://www.examtopics.com/discussions/databricks/view/303306-exam-certified-generative-ai-engineer-associate-topic-1/)
+
+A Generative AI Engineer is building a RAG application for answering employee questions on company policies.
+
+What are the steps needed to build this RAG application and deploy it?
+
+A. Ingest documents from a source -> Index the documents and saves to Vector Search -> User submits queries against an LLM -> LLM retrieves relevant documents -> Evaluate model -> LLM generates a response -> Deploy it using Model Serving
+B. User submits queries against an LLM -> Ingest documents from a source -> Index the documents and save to Vector Search -> LLM retrieves relevant documents -> LLM generates a response -> Evaluate model -> Deploy it using Model Serving
+C. Ingest documents from a source -> Index the documents and save to Vector Search -> Evaluate model -> Deploy it using Model Serving -> User submits queries against an LLM -> LLM retrieves relevant documents -> LLM generates a response
+D. Ingest documents from a source -> Index the documents and save to Vector Search -> User submits queries against an LLM -> LLM retrieves relevant documents -> LLM generates a response -> Evaluate model -> Deploy it using Model Serving","The correct answer is **D**. The steps for building and deploying a RAG application are:
+
+1.  **Ingest documents from a source:** Load the company policy documents.
+2.  **Index the documents and save to Vector Search:** Create a vector index for efficient retrieval.
+3.  **User submits queries against an LLM:** The user asks a question.
+4.  **LLM retrieves relevant documents:** The LLM uses the vector index to find relevant documents.
+5.  **LLM generates a response:** The LLM generates an answer based on the retrieved documents.
+6.  **Evaluate model:** Assess the quality and accuracy of the response.
+7.  **Deploy it using Model Serving:** Make the application available for use.
+
+**Why other options are wrong:**
+
+*   **A, B and C:** are wrong because evaluation has to be done after the response is generated to assess output quality."
+"[https://www.examtopics.com/discussions/databricks/view/302723-exam-certified-generative-ai-engineer-associate-topic-1/](https://www.examtopics.com/discussions/databricks/view/302723-exam-certified-generative-ai-engineer-associate-topic-1/)
+
+A Generative AI Engineer has written scalable PySpark code to ingest unstructured PDF documents and chunk them in preparation for storing in a Databricks Vector Search index. Currently, the two columns of their dataframe include the original filename as a string and an array of text chunks from that document.
+
+What set of steps should the Generative AI Engineer perform to store the chunks in a ready-to-ingest manner for Databricks Vector Search?
+
+A. Use PySpark’s autoloader to apply a UDF across all chunks, formatting them in a JSON structure for Vector Search ingestion.
+B. Flatten the dataframe to one chunk per row, create a unique identifier for each row, and enable change feed on the output Delta table.
+C. Utilize the original filename as the unique identifier and save the dataframe as is.
+D. Create a unique identifier for each document, flatten the dataframe to one chunk per row and save to an output Delta table.","B. Flatten the dataframe to one chunk per row, create a unique identifier for each row, and enable change feed on the output Delta table.
+
+Explanation:
+
+*   **Why B is correct:** Databricks Vector Search requires change data feed (CDF) to pick up inserts or updates from the Delta table, so enabling it and creating a unique ID for each row is essential. The data needs to be flattened so each row represents one chunk to be vectorized.
+*   **Why A is wrong:** PySpark's autoloader is primarily for incremental data loading, not for formatting data for Vector Search. While you might use a UDF for data transformation, autoloader itself isn't the core requirement here.
+*   **Why C is wrong:** Using the original filename as the unique identifier would lead to issues if multiple documents have the same name, and it also doesn't address the need to flatten the dataframe.
+*   **Why D is wrong:** This option misses the key requirement to enable change feed, which is necessary for ingestion into Vector Search."
+"[https://www.examtopics.com/discussions/databricks/view/304026-exam-certified-generative-ai-engineer-associate-topic-1/](https://www.examtopics.com/discussions/databricks/view/304026-exam-certified-generative-ai-engineer-associate-topic-1/)
+
+A Generative AI Engineer is building an LLM to generate article headlines given the article content. However, the initial output from the LLM does not match the desired tone or style.
+
+Which approach would be most effective for adjusting the LLM’s response to achieve the desired response?
+
+A. Exclude any article headlines that do not match the desired output
+B. Fine-tune the LLM on a dataset of desired tone and style
+C. Provide the LLM with a prompt that explicitly instructs it to generate text in the desired tone and style
+D. All of the above","D. All of the above
+
+*   **Why it's correct:** All the options can contribute to adjusting the LLM's response.  Fine-tuning (B) directly trains the model on the desired style. Prompt engineering (C) guides the LLM's generation process. Excluding undesired outputs (A) is a form of filtering that helps refine the results, thus ""all of the above"" would be effective.
+*   **Why other options are wrong:**
+    *   A is wrong because only excluding undesirable output does not address the cause of the undesirable output.
+    *   B is wrong because this is a valid option, but is not the only one.
+    *   C is wrong because, again, this is a valid option but not the only one."

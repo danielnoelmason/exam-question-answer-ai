@@ -1,0 +1,7 @@
+venv/
+.env
+.DS_Store
+lists/
+listsinvalid/
+jsons/
+jsonsinvalid/

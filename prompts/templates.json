@@ -1,9 +1,12 @@
 {
-    "standard": {
+    "standard_v1": {
         "description": "Simple and focused: create a full question and answer using all relevant content.",
         "template": "You are creating exam-style question and answer pairs.\n\nUse all relevant information in the CONTENT section to write the full QUESTION exactly as a test-taker would see it, including text, options, and images if present.\n\nUse the DISCUSSION section to determine the most likely correct answer, explain why it is correct, and briefly explain why any incorrect options are wrong.\n\nIgnore any elements in CONTENT that are not part of the question itself, such as 'Suggested Answer', 'Show Answer', or vote icons.\n\n---\n\nCONTENT:\n{text}\n\nDISCUSSION:\n{discussion}\n\n---\n\nFORMAT:\nQUESTION: ...\nANSWER: ..."
-      },
-      
+    },
+    "standard": {
+        "description": "Clean and structured: include full question and answer with image links.",
+        "template": "You are creating exam-style question and answer pairs.\n\nUse all relevant information in the CONTENT section to write the full QUESTION exactly as a test-taker would see it, including text, options, and images.\n\nIf the question contains images, include them as clickable links using the format: [Image](https://...).\n\nDo NOT embed images using ![Image](...) syntax.\n\nUse the DISCUSSION section to determine the most likely correct answer, explain why it is correct, and briefly explain why any incorrect options are wrong.\n\nIgnore any elements in CONTENT that are not part of the question itself, such as 'Suggested Answer', 'Show Answer', or vote icons.\n\n---\n\nCONTENT:\n{text}\n\nDISCUSSION:\n{discussion}\n\n---\n\nFORMAT:\nQUESTION: ...\nANSWER: ..."
+    },
     "standard_verbose": {
         "description": "Verbose prompt including image notes and a link at the start.",
         "template": "You are generating exam-style question and answer pairs.\n\nBased **only** on the content and discussion below:\n- Extract the **exact QUESTION**.\n- Provide a **clear, correct ANSWER**, with a explanation.\n- Explain why **other options** (if any) are incorrect.\n- If there are images, extract any visible text and include it in the question.\n- If the discussion reflects disagreement or conflicting opinions, add a short note in your answer to acknowledge that disagreement.\n- Start the question with the original **URL** in this format: [View Question]({url})\n\n---\n\nURL: {url}\n\nCONTENT:\n{text}\n\nDISCUSSION (user insights):\n{discussion}\n\n---\n\nFORMAT:\nQUESTION: ...\nANSWER: ..."

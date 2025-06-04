@@ -4,7 +4,8 @@ import os
 load_dotenv()
 
 api_key = os.getenv("GEMINI_API_KEY")
-json_input_file="exam-certified-machine-learning-professional"
+api_model = "gemini-2.0-flash"
+json_input_file="exam-az-900"
 import requests
 
 def fetch_html(url):
@@ -84,11 +85,11 @@ def generate_question_answer(url, text, discussion, images):
     prompt = prompt_template.format(url=url, text=text, discussion=discussion)
     try:
         response = client.models.generate_content(
-            model="gemini-2.0-flash",
+            model=api_model,
             contents=prompt,
         )
-        print("\n\n******** PROMPT + EXTRACTION START ********\n\n"+prompt+"\n\n******** PROMPT + EXTRACTION END ********\n\n")
-        print("\n\n******** LLM RESPONSE START ********\n\n" + response.text + "\n\n******** LLM RESPONSE END ********\n\n")
+        print("\n\n******** PROMPT + EXTRACTION START ********\n"+prompt+"\n******** PROMPT + EXTRACTION END ********\n\n")
+        print("\n\n******** LLM RESPONSE START ********\n" + response.text + "\n******** LLM RESPONSE END ********\n\n")
         answer = response.text
 
         if "QUESTION:" in answer and "ANSWER:" in answer:
@@ -97,7 +98,7 @@ def generate_question_answer(url, text, discussion, images):
             answer_text = parts[1].strip()
             return {"QUESTION": question, "ANSWER": answer_text}
         else:
-            return {"QUESTION": "", "ANSWER": f"[Parsing error] Full response:\n{answer}"}
+            return {"QUESTION": prompt, "ANSWER": f"[Parsing error] Full response:\n{answer}"}
     except Exception as e:
         print(f"[ERROR] LLM request failed: {e}")
         return {"QUESTION": "", "ANSWER": "[LLM error]"}
@@ -129,9 +130,9 @@ def main():
 
     qa_list = []
 
-    for url in urls:
-    # for url in urls[:5]:  # Process only the first 5 URLs
-        print(f"[INFO] Processing: {url}")
+    total_urls = len(urls)
+    for index, url in enumerate(urls, start=1):
+        print(f"[INFO] Processing: {url} ({index}/{total_urls})")
         html = fetch_html(url)
         if not html:
             continue
@@ -142,7 +143,7 @@ def main():
         qa_pair = generate_question_answer(url, question, discussion, images)
         qa_list.append(qa_pair)
 
-        time.sleep(.1)  # Be respectful to servers
+        time.sleep(2.5)  # Be respectful to servers
 
     save_to_csv(qa_list)
 

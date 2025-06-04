@@ -79,19 +79,32 @@ client = genai.Client(api_key=api_key)  # assumes GEMINI_API_KEY is in env vars
 def generate_question_answer(url, text, discussion, images):
 
     prompt = f"""
-You are creating exam style question and answer ouputs. Based ONLY on the content below, generate a the exact QUESTION and a clear, concise ANSWER, explaining why this is right, and why other options are wrong. If images are provided in content, extract the text from them and add it to the question section. Include a link to the URL in the QUESTION section. Add markdown formatting appropriately.
+You are generating exam-style question and answer pairs.
+
+Based **only** on the content and discussion below:
+- Extract the **exact QUESTION**.
+- Provide a **clear, correct ANSWER**, with a brief explanation.
+- Explain why **other options** (if any) are incorrect.
+- If there are images, extract any visible text and include it in the question.
+- Start the question with the original **URL** in this format: [View Question]({url})
+
+---
 
 URL: {url}
+
 CONTENT:
 {text}
 
-DISCUSSION (this is what users think):
+DISCUSSION (user insights):
 {discussion}
+
+---
 
 FORMAT:
 QUESTION: ...
 ANSWER: ...
-    """
+"""
+
 
     try:
         response = client.models.generate_content(
@@ -116,7 +129,7 @@ ANSWER: ...
 
 import pandas as pd
 
-def save_to_csv(data, filename='exam_q_and_a.csv'):
+def save_to_csv(data, filename='Practice Questions - exam-certified-data-engineer-associate.csv'):
     df = pd.DataFrame(data)
     df.to_csv(filename, index=False)
     print(f"[INFO] Saved {len(data)} entries to {filename}")
@@ -127,9 +140,16 @@ def read_urls_from_file(file_path):
     with open(file_path, "r") as file:
         return [line.strip() for line in file if line.strip()]
 
+import json
+def read_urls_from_json(file_path):
+    """Read list of URLs from a JSON file."""
+    with open(file_path, "r") as file:
+        return json.load(file)
+
 def main():
     load_dotenv()
-    urls = read_urls_from_file("valid_examtopic_urls.txt")
+    url_file = "jsons/exam-certified-data-engineer-associate.json"
+    urls = read_urls_from_json(url_file)
 
     qa_list = []
 
@@ -145,9 +165,10 @@ def main():
         qa_pair = generate_question_answer(url, question, discussion, images)
         qa_list.append(qa_pair)
 
-        time.sleep(5)  # Be respectful to servers
+        time.sleep(.1)  # Be respectful to servers
 
     save_to_csv(qa_list)
+
 
 
 if __name__ == "__main__":

@@ -2,10 +2,9 @@ import requests
 import re
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import os
+import json
 
 # Ensure output directories exist
-os.makedirs("lists", exist_ok=True)
-os.makedirs("listsinvalid", exist_ok=True)
 os.makedirs("jsons", exist_ok=True)
 os.makedirs("jsonsinvalid", exist_ok=True)
 
@@ -39,8 +38,18 @@ def check_url_follow_redirects(url, timeout_seconds=10):
     except requests.exceptions.RequestException as e:
         return {'original_url': url, 'is_valid': False, 'final_url': None, 'message': f"Request failed: {e}"}
 
+def append_unique_json(filepath, new_items):
+    existing_items = set()
+    if os.path.exists(filepath):
+        with open(filepath, "r") as f:
+            existing_items = set(json.load(f))
+
+    combined_items = sorted(existing_items.union(new_items))
+    with open(filepath, "w") as f:
+        json.dump(combined_items, f, indent=2)
+
 if __name__ == "__main__":
-    ranges_to_check = [(147800, 147830)]
+    ranges_to_check = [(101, 100000-1)]
     urls = generate_examtopic_urls_from_ranges(ranges_to_check)
     print(f"🔍 Checking {len(urls)} URLs from ranges: {ranges_to_check}\n")
 
@@ -55,79 +64,46 @@ if __name__ == "__main__":
             print(f"{result['original_url']} → {'✅' if result['is_valid'] else '❌'} | {result['message']}")
 
             if result['is_valid'] and result['final_url']:
-                valid_redirects.append(result['final_url'])
+                exam_name = extract_exam_name(result['final_url'])
+                if exam_name:
+                    filepath = f"jsons/{exam_name}.json"
+                    append_unique_json(filepath, [result['final_url']])
+                else:
+                    # Couldn't extract exam name, treat as invalid
+                    append_unique_json("jsonsinvalid/failures.json", [result['original_url']])
             else:
-                invalid_urls.append(result)
+                append_unique_json("jsonsinvalid/failures.json", [result['original_url']])
 
-    # Save per-exam files
+
+    # Save valid redirects into per-exam JSON files
     saved = {}
-
-    # Write valid redirects into per-exam files
     for redirected_url in valid_redirects:
         exam_name = extract_exam_name(redirected_url)
         if exam_name:
-            filename = f"lists/{exam_name}.txt"
-            with open(filename, "a") as f:
-                f.write(redirected_url + "\n")
+            filepath = f"jsons/{exam_name}.json"
+            append_unique_json(filepath, [redirected_url])
             saved.setdefault(exam_name, 0)
             saved[exam_name] += 1
         else:
             print(f"⚠️ Couldn't extract exam name from: {redirected_url}")
-            invalid_urls.append(redirected_url)  # Push to invalid list
+            invalid_urls.append({'original_url': redirected_url, 'reason': "Could not extract exam name"})
 
-    # Write failed ones into a general failure log
-    failure_filename = "listsinvalid/failures.txt"
-    for failed_url in invalid_urls:
-        filename = f"listsinvalid/failures.txt"
-        with open(filename, "a") as f:
-            if isinstance(failed_url, dict):
-                f.write(f'{failed_url.get("original_url", "UNKNOWN")} — {failed_url.get("reason", "No reason")}\n')
-            else:
-                f.write(f'{failed_url}\n')
+    # Save invalid URLs to a single JSON file
+    failures_path = "jsonsinvalid/failures.json"
+    failure_entries = []
 
-    import json
-
-    def append_unique_json(filepath, new_items):
-        existing_items = set()
-        if os.path.exists(filepath):
-            with open(filepath, "r") as f:
-                existing_items = set(json.load(f))
-
-        combined_items = list(existing_items.union(new_items))
-
-        with open(filepath, "w") as f:
-            json.dump(combined_items, f, indent=2)
-
-    # Save URLs per exam
-    for redirected_url in valid_redirects:
-        exam_name = extract_exam_name(redirected_url)
-        if exam_name:
-            filename = f"jsons/{exam_name}.json"
-            append_unique_json(filename, [redirected_url])
-            saved.setdefault(exam_name, 0)
-            saved[exam_name] += 1
+    for item in invalid_urls:
+        if isinstance(item, dict):
+            failure_entries.append(f"{item.get('original_url', 'UNKNOWN')} — {item.get('reason', item.get('message', 'No reason'))}")
         else:
-            invalid_urls.append(redirected_url)
+            failure_entries.append(str(item))
 
-    # Save failures to a shared JSON file
-    failure_lines = []
-    for failed_url in invalid_urls:
-        if isinstance(failed_url, dict):
-            failure_lines.append(f'{failed_url.get("original_url", "UNKNOWN")} — {failed_url.get("reason", "No reason")}')
-        else:
-            failure_lines.append(failed_url)
+    append_unique_json(failures_path, failure_entries)
 
-    append_unique_json("jsonsinvalid/failures.json", failure_lines)
-
-
-
-    # Optionally print/save summary of valid ones
-    for exam, count in saved.items():
-        print(f"✅ Saved {count} entries to {exam}.txt")
-
+    # Summary output
     print("\n✅ Saved exam redirects to:")
     for exam, count in saved.items():
-        print(f" - {exam}.txt: {count} entries")
+        print(f" - {exam}.json: {count} new entries")
 
     print(f"\n📊 Summary:")
     print(f"Checked: {len(urls)} | Valid: {len(valid_redirects)} | Invalid: {len(invalid_urls)}")

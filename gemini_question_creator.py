@@ -4,7 +4,7 @@ import os
 load_dotenv()
 
 api_key = os.getenv("GEMINI_API_KEY")
-
+json_input_file="exam-certified-machine-learning-professional"
 import requests
 
 def fetch_html(url):
@@ -75,44 +75,20 @@ def parse_exam_page(html, base_url):
 from google import genai
 
 client = genai.Client(api_key=api_key)  # assumes GEMINI_API_KEY is in env vars
+from prompts.prompt_manager import PromptManager
+prompt_manager = PromptManager()
 
 def generate_question_answer(url, text, discussion, images):
 
-    prompt = f"""
-You are generating exam-style question and answer pairs.
-
-Based **only** on the content and discussion below:
-- Extract the **exact QUESTION**.
-- Provide a **clear, correct ANSWER**, with a brief explanation.
-- Explain why **other options** (if any) are incorrect.
-- If there are images, extract any visible text and include it in the question.
-- Start the question with the original **URL** in this format: [View Question]({url})
-
----
-
-URL: {url}
-
-CONTENT:
-{text}
-
-DISCUSSION (user insights):
-{discussion}
-
----
-
-FORMAT:
-QUESTION: ...
-ANSWER: ...
-"""
-
-
+    prompt_template = prompt_manager.get("standard")
+    prompt = prompt_template.format(url=url, text=text, discussion=discussion)
     try:
         response = client.models.generate_content(
             model="gemini-2.0-flash",
             contents=prompt,
         )
-        print("****\n"+prompt+"****\n")
-        print(response.text)
+        print("\n\n******** PROMPT + EXTRACTION START ********\n\n"+prompt+"\n\n******** PROMPT + EXTRACTION END ********\n\n")
+        print("\n\n******** LLM RESPONSE START ********\n\n" + response.text + "\n\n******** LLM RESPONSE END ********\n\n")
         answer = response.text
 
         if "QUESTION:" in answer and "ANSWER:" in answer:
@@ -129,7 +105,7 @@ ANSWER: ...
 
 import pandas as pd
 
-def save_to_csv(data, filename='Practice Questions - exam-certified-data-engineer-associate.csv'):
+def save_to_csv(data, filename=f'Practice Questions - {json_input_file}.csv'):
     df = pd.DataFrame(data)
     df.to_csv(filename, index=False)
     print(f"[INFO] Saved {len(data)} entries to {filename}")
@@ -148,12 +124,13 @@ def read_urls_from_json(file_path):
 
 def main():
     load_dotenv()
-    url_file = "jsons/exam-certified-data-engineer-associate.json"
+    url_file = f"jsons/{json_input_file}.json"
     urls = read_urls_from_json(url_file)
 
     qa_list = []
 
     for url in urls:
+    # for url in urls[:5]:  # Process only the first 5 URLs
         print(f"[INFO] Processing: {url}")
         html = fetch_html(url)
         if not html:
